@@ -15,7 +15,9 @@ app.listen(3000,(err)=>{
     }
 })
 
-app.use('/user',require('./models/userCRUD'))
+app.use(bodyParser.json());
+app.use('/user',require('./models/userCRUD'));
+
 
 
 //mongoose.connect('mongodb://['+process.env.DB_USERNAME+':'+process.env.DB_PASSWORD+']@'+process.env.DB_HOST+':27017/'+process.env.DB_DATABASE);
