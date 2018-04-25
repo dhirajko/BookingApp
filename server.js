@@ -16,7 +16,7 @@ app.listen(3000,(err)=>{
 })
 
 app.use(bodyParser.json());
-app.use('/user',require('./models/userCRUD'));
+app.use('/',require('./models/userCRUD'));
 
 
 
