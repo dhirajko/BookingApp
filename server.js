@@ -1,5 +1,5 @@
 
-
+const auth=require('./routes/auth')
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
 const mongoose = require('mongoose');
@@ -28,7 +28,7 @@ app.listen(3000, (err) => {
 
 app.use(bodyParser.json());
 app.use('/api/users', users);
-
+app.use('/api/auth',auth);
 
 
 //mongoose.connect('mongodb://['+process.env.DB_USERNAME+':'+process.env.DB_PASSWORD+']@'+process.env.DB_HOST+':27017/'+process.env.DB_DATABASE);
