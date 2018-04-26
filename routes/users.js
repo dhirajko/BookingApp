@@ -1,3 +1,5 @@
+const config=require('config');
+const jwt=require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const _ = require('lodash');                                                            //for picking the required data only from object
 const { User, validate } = require('../models/user')
@@ -16,10 +18,10 @@ router.post('/', async (req, res) => {
 
     const salt = await bcrypt.genSalt(10);                                                       // generating salt for encryption of password
     user.password = await bcrypt.hash(user.password, salt);                                       //hasing password with bcrypt
-
     await user.save();
-
-    res.send(_.pick(user, ['_id', 'name', 'email']));                                             //picking the needed property from the user object
-})
+    
+    const token= user.generateAuthToken();
+    res.header('x-auth-token',token).send(_.pick(user, ['_id', 'name', 'email']));                 //picking the needed property from the user object
+});
 
 module.exports = router;

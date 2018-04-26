@@ -1,4 +1,6 @@
-const Joi =require('joi');                                                              // to validate the input 
+const config = require('config');
+const jwt = require('jsonwebtoken');
+const Joi = require('joi');                                                              // to validate the input 
 const bcrypt = require('bcrypt');
 const _ = require('lodash');                                                            //for picking the required data only from object
 const { User } = require('../models/user')
@@ -13,11 +15,12 @@ router.post('/', async (req, res) => {
 
     let user = await User.findOne({ email: req.body.email });
     if (!user) return res.status(400).send(' Invalid email or password');
-   
-    const ValidPassword=await    bcrypt.compare(req.body.password,user.password);           //bcrypting the req password with user stored password
-    if(!ValidPassword) return res.status(400).send('Invalid email or password');
 
-    res.send (true);
+    const ValidPassword = await bcrypt.compare(req.body.password, user.password);           //bcrypting the req password with user stored password
+    if (!ValidPassword) return res.status(400).send('Invalid email or password');
+
+    const token=user.generateAuthToken();
+    res.send(token);
 })
 
 const validate = (req) => {                                                            //using Joi to validate the input data i.e req with schema defined
