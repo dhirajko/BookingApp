@@ -11,6 +11,7 @@ router.post('/', async (req, res) => {
     const { error } = validate(req.body);                                               //validating the body
     if (error) return res.status(400).send(error.details[0].message);
 
+    //TODO: prefer .then() promise instead of await
     let user = await User.findOne({ email: req.body.email });
     if (user) return res.status(400).send(' User already regist0ed');
 

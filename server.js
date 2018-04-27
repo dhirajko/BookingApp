@@ -16,7 +16,7 @@ if(!config.get('jwtPrivateKey')){
 }
 
 
-
+//TODO: dotenv?
 mongoose.connect('mongodb://localhost:27017/udemy', (err) => {
     if (err) throw err;
     else {
@@ -25,7 +25,7 @@ mongoose.connect('mongodb://localhost:27017/udemy', (err) => {
     }
 })
 
-
+//TODO: HTTPS!!!!!!!!!!!!!!!!!!!!!!
 app.listen(3000, (err) => {
     if (err) throw err;
     else {
