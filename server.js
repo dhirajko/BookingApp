@@ -3,7 +3,8 @@ const auth=require('./routes/auth');
 const booking= require('./routes/booking')
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
+const MongodbConnection=require('./config/database');
 const express = require('express');
 const bodyParser = require('body-parser');
 const users = require('./routes/users');
@@ -12,7 +13,10 @@ const http = require('http');
 const fs = require('fs');
 const helmet = require('helmet');
 const cors = require('cors');
+var httpsRedirect = require('express-https-redirect');
 const app = express();
+
+
 
 const sslkey = fs.readFileSync('ssl-key.pem');
 const sslcert = fs.readFileSync('ssl-cert.pem')
@@ -28,32 +32,22 @@ https.createServer(options, app).listen(3000, (err) => {
         console.log('connected to secure server');
 
     }
-});
+})
 
-http.createServer((req, res) => {
-    res.writeHead(301, { 'Location': 'https://localhost:3000' + req.url });
-    res.end();
-}).listen(8080);
+MongodbConnection;
 
 
 
-if(!config.get('jwtPrivateKey')){
+if(!config.get('jwtPrivateKey')){                               //export dhiraj_jwtPrivateKey=mySecureKey
     console.error('Fatal Errot: jwtPrivateKey is not definde');
     process.exit(1);
 }
 
 
-//TODO: dotenv?
-mongoose.connect('mongodb://localhost:27017/udemy', (err) => {
-    if (err) throw err;
-    else {
-        console.log('connected to database');
-
-    }
-})
 
 
 
+app.use('/', httpsRedirect(true));
 app.use(cors());
 app.use(helmet());
 app.use(bodyParser.json());
