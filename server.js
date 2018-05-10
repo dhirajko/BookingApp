@@ -3,7 +3,6 @@ const auth=require('./routes/auth');
 const booking= require('./routes/booking')
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
-//const mongoose = require('mongoose');
 const MongodbConnection=require('./config/database');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -37,8 +36,8 @@ https.createServer(options, app).listen(3000, (err) => {
 MongodbConnection;
 
 
-
-if(!config.get('jwtPrivateKey')){                               //export dhiraj_jwtPrivateKey=mySecureKey
+                                                                //please define your dhiraj_jwtPrivateKey to start app e.g.
+if(!config.get('jwtPrivateKey')){                               // export dhiraj_jwtPrivateKey=mySecureKey      (in terminal before nodemon)
     console.error('Fatal Errot: jwtPrivateKey is not definde');
     process.exit(1);
 }
@@ -55,7 +54,6 @@ app.use('/api/users', users);
 app.use('/api/auth',auth);
 app.use('/api/booking',booking)
 
-//mongoose.connect('mongodb://['+process.env.DB_USERNAME+':'+process.env.DB_PASSWORD+']@'+process.env.DB_HOST+':27017/'+process.env.DB_DATABASE);
 
 app.get('/', (req, res) => {
     res.send('This is get')
