@@ -5,7 +5,9 @@ const _ = require('lodash');                                                    
 const { User, validate } = require('../models/user')
 const mongoose = require('mongoose');
 const express = require('express');
+const auth=require('../middleware/auth')
 const router = express.Router();
+
  
 
 
@@ -27,5 +29,13 @@ router.post('/', async (req, res) => {
     const token= user.generateAuthToken();
     res.header('x-auth-token',token).send(_.pick(user, ['_id', 'name', 'email']));                 //picking the needed property from the user object
 });
+
+router.get('/',auth,async(req,res)=>{
+    const user=User.findById(req.user._id).select('-password');
+    res.send(user);
+})
+
+
+
 
 module.exports = router;

@@ -10,6 +10,8 @@ const users = require('./routes/users');
 const https = require('https');
 const http = require('http');
 const fs = require('fs');
+const helmet = require('helmet');
+const cors = require('cors');
 const app = express();
 
 const sslkey = fs.readFileSync('ssl-key.pem');
@@ -50,10 +52,10 @@ mongoose.connect('mongodb://localhost:27017/udemy', (err) => {
     }
 })
 
-//TODO: HTTPS!!!!!!!!!!!!!!!!!!!!!!
 
 
-
+app.use(cors());
+app.use(helmet());
 app.use(bodyParser.json());
 app.use('/api/users', users);
 app.use('/api/auth',auth);
