@@ -6,8 +6,33 @@ Joi.objectId = require('joi-objectid')(Joi);
 const mongoose = require('mongoose');
 const express = require('express');
 const bodyParser = require('body-parser');
-const users = require('./routes/users')
+const users = require('./routes/users');
+const https = require('https');
+const http = require('http');
+const fs = require('fs');
 const app = express();
+
+const sslkey = fs.readFileSync('ssl-key.pem');
+const sslcert = fs.readFileSync('ssl-cert.pem')
+
+const options = {
+    key: sslkey,
+    cert: sslcert
+};
+
+https.createServer(options, app).listen(3000, (err) => {
+    if (err) throw err;
+    else {
+        console.log('connected to secure server');
+
+    }
+});
+
+http.createServer((req, res) => {
+    res.writeHead(301, { 'Location': 'https://localhost:3000' + req.url });
+    res.end();
+}).listen(8080);
+
 
 
 if(!config.get('jwtPrivateKey')){
@@ -26,13 +51,7 @@ mongoose.connect('mongodb://localhost:27017/udemy', (err) => {
 })
 
 //TODO: HTTPS!!!!!!!!!!!!!!!!!!!!!!
-app.listen(3000, (err) => {
-    if (err) throw err;
-    else {
-        console.log('connected to server');
 
-    }
-})
 
 
 app.use(bodyParser.json());

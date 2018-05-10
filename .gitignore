@@ -57,3 +57,8 @@ typings/
 # dotenv environment variables file
 .env
 
+#https connection certificate
+certrequest.csr
+ssl-cert.pem
+ssl-key.pem
+
